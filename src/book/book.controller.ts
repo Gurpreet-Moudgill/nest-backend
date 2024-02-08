@@ -86,15 +86,20 @@ export class BookController {
 
     @UseGuards(AuthGuard)
     @Put(':id')
+    @UseInterceptors(FilesInterceptor('file'))
     async updateBook(
         @Param('id')
         id: string,
         @Body()
-        book: updateBookDto
+        book: updateBookDto,
+        @UploadedFiles()
+        file: Array<Express.Multer.File>
     ): Promise<Book>{
         try{
+            const files = file[0].path
             const res = this.bookService.update(id, book)
-            return res
+            const image = this.bookService.fileUp(id, {image: files})
+            return image
         }
         catch(error){
             console.error("Error", error)

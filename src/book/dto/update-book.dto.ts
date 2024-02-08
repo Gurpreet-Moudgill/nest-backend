@@ -12,7 +12,7 @@ export class updateBookDto{
     @IsString()
     readonly author: string;
     @IsOptional()
-    @IsNumber()
+    @IsString()
     readonly price: string;
     @IsOptional()
     @IsEnum(Category, {message: "please enter correct category(Adventure, Classics, Crime, Fantasy",})
