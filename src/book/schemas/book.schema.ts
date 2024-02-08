@@ -22,10 +22,13 @@ export class Book {
     author: string
 
     @Prop()
-    price: number
+    price: string
 
     @Prop()
     category: Category
+
+    @Prop()
+    image: string
 }
 
 export const BookSchema = SchemaFactory.createForClass(Book);

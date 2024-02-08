@@ -1,10 +1,11 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, Query, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, Query, UploadedFile, UploadedFiles, UseGuards, UseInterceptors } from '@nestjs/common';
 import { BookService } from './book.service';
 import { Book } from './schemas/book.schema';
 import { createBookDto } from './dto/create-book.dto';
 import { updateBookDto } from './dto/update-book.dto';
 import { Query as ExpressQuery} from 'express-serve-static-core';
 import { AuthGuard } from 'src/auth/auth.guard';
+import { FilesInterceptor } from '@nestjs/platform-express';
 
 @Controller('books')
 export class BookController {
@@ -28,6 +29,25 @@ export class BookController {
         try{
         const res =  this.bookService.create(book);
         return res;
+        }
+        catch(error){
+            console.error("Error", error)
+        }
+    }
+
+    @UseGuards(AuthGuard)
+    @Put('image/:id')
+    @UseInterceptors(FilesInterceptor('file'))
+    async updateImage(
+        @Param('id')
+        id: string,
+        @UploadedFiles()
+        file: Array<Express.Multer.File>
+    ): Promise<Book>{
+        try{
+            const files = file[0].originalname
+            const res = this.bookService.fileUp(id, {image: files})
+            return res
         }
         catch(error){
             console.error("Error", error)

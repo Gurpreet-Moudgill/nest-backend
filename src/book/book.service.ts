@@ -31,6 +31,17 @@ export class BookService {
         return res;
     }
 
+    async fileUp(id: string, image: object): Promise<Book>{
+        const res = await this.bookModel.findByIdAndUpdate(id, image, {
+            new: true,
+            runValidators: true
+        })
+        if(!res){
+            throw new NotFoundException("Book Not Found")
+        }
+        return res;
+    }
+
     async findById(id: string): Promise<Book>{
 
         const isValid = mongoose.isValidObjectId(id);

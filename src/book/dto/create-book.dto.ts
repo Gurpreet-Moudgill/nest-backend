@@ -12,9 +12,12 @@ export class createBookDto{
     @IsString()
     readonly author: string;
     @IsNotEmpty()
-    @IsNumber()
-    readonly price: number;
+    @IsString()
+    readonly price: string;
     @IsNotEmpty()
     @IsEnum(Category, {message: "please enter correct category(Adventure, Classics, Crime, Fantasy",})
     readonly category: Category;
+    // @IsNotEmpty()
+    // @IsString()
+    readonly image: string;
 }
